@@ -10,7 +10,6 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxtjs/tailwindcss": "^6.14.0",
     "@tailwindcss/vite": "^4.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
