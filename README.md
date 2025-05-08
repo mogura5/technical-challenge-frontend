@@ -2,6 +2,10 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Demo
+https://github.com/user-attachments/assets/59a776ec-c91f-411b-87d6-175bbdad7ab4
+
+
 ## Setup
 
 Make sure to install dependencies:
