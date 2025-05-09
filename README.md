@@ -69,7 +69,7 @@ https://github.com/user-attachments/assets/59a776ec-c91f-411b-87d6-175bbdad7ab4
 - Add two request buttons:
   - **Refresh Data** - On click, make a request to `/api/counters` and update the data displayed.
   - **Execute Error** - On click, make a request to `/api/counters` with the query param `?error=true` to generate an error.
-- Add the chart to the reusable component using the `custom/Highcharts.vue` component. 
+- Add the chart to the reusable component using the `components/custom/Highcharts.vue` component. 
   - This component uses an `options` prop of type `Highcharts.Options`.
   - Update the `composables/useHighchartsOptions.ts` composable to do the following:
     - Set width and height to fit in the reusable component.
@@ -77,7 +77,7 @@ https://github.com/user-attachments/assets/59a776ec-c91f-411b-87d6-175bbdad7ab4
     - Update the `tooltip.formatter()` property for each of the options to show the formatted values as we did previously for each type: percentage, USD currency, numbers without fraction digits. See `preview` for layout of tooltip.
   - Use the `composables/useHighchartsOptions.ts` composable to pass correct options to each of the reusable components built.
 - On page load, retrieve `/api/counters` data.
-  - You will need to pass the `/api/counters` data (e.g. `transactions.data`) to the options object pass as a prop to `<Highcharts :options="transactionsOptions" />`.
+  - You will need to pass the `/api/counters` data (e.g. `transactions.data`) to the options object as a prop to `<Highcharts :options="transactionsOptions" />`.
   - To do this, you can do `transactionsOptions.value.series = [data: transactions.data, color: '{splineColor}']` after every GET successful request.
 - Create a `getSplineColor()` function to return a green, blue, red color depending on the health value. Used in `transactionsOptions.value.series`.
 - Use the `Sonner` component to display a Toast error to handle errors when making a request and display the error message provided by the API.
