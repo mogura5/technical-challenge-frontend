@@ -49,7 +49,7 @@ For this exercise, we have pre-built an API endpoint we'll be able to access thr
 ```
 
 ### Preview
-https://github.com/user-attachments/assets/59a776ec-c91f-411b-87d6-175bbdad7ab4
+https://github.com/user-attachments/assets/dd0b82ff-b8c6-4094-87fd-d4841d2aec42
 
 ### Tasks
 >[!NOTE]
