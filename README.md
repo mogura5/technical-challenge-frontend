@@ -3,7 +3,7 @@
 ## Description
 The overall goal of the technical challenge is for us to get an idea of how you approach tasks, your coding style, your organization skills, and your technical experience as a frontend engineer in general.
 
-We want to be sensitive of the time you spend working on this, so we have designed the technical challenge to be a simpler version of a task an engineer in this role would be assigned. After we review the assignment, we want to invite you back and set some time to [discuss how you would approach implementing additional features](#challenge-review-discussion).
+We want to be sensitive of the time you spend working on this, so we have designed the technical challenge to be a simpler version of a task an engineer in this role would be assigned. After we review the assignment, we want to invite you back and set some time to discuss your work and learn about your process.
 
 
 ## Challenge
