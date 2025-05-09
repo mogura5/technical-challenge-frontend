@@ -19,7 +19,7 @@ For this exercise, we have pre-built an API endpoint we'll be able to access thr
 - You can find the API file at `server/api/counters`.
 - The endpoint simulates a `1000ms` delay we'll use for loading states.
 - Passing the `?error=true` parameter in the request returns an `error` object we'll need.
-- Each key in the `GET /api/counters` response returns a `data` property with seven days worth of data in the form of `[date: string, value: number]`.
+- Each key in the `GET /api/counters` response returns a `data` property with seven days worth of data in the form of `[date: string, value: number]` and a `health` property telling us the behavior of the last seven days.
 
 ##### GET `/api/counters`
 ```ts
