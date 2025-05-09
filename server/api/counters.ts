@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import type { HealthValue } from "~/types"
 
 export default defineEventHandler(async (event) => {
   // Simulate 1000ms delay.
@@ -13,15 +14,22 @@ export default defineEventHandler(async (event) => {
     })
 
   // Otherwise return data.
+  const retentionRateData = generateData({ type: 'percentage' })
+  const transactionsData = generateData({ type: 'number' })
+  const revenueData = generateData({ type: 'currency' })
+
   return {
     retention_rate: {
-      data: generateData({ type: 'percentage' }),
+      data: retentionRateData,
+      health: getHealthValue(retentionRateData),
     },
     transactions: {
-      data: generateData({ type: 'number' }),
+      data: transactionsData,
+      health: getHealthValue(transactionsData),
     },
     revenue: {
-      data: generateData({ type: 'currency' }),
+      data: revenueData,
+      health: getHealthValue(revenueData),
     }
   }
 })
@@ -43,4 +51,24 @@ function generateDataValue(type: DataType = 'number'): number {
   if (type === 'currency')
     return Number((Math.random() * 10000).toFixed(2))
   return Math.random() * 10000
+}
+
+export function getHealthValue(data: [string, number][] | undefined): HealthValue {
+  if (!data)
+    return 'neutral'
+  const flatValues = data.map(value => value[1])
+  const minValue = Math.min(...flatValues)
+  const maxValue = Math.max(...flatValues)
+  const startValue = data[data.length - 1][1]
+  const endValue = data[0][1]
+
+  const startComparison = ((startValue - minValue) / (maxValue - minValue) * 100)
+  const endComparison = ((endValue - minValue) / (maxValue - minValue) * 100)
+  const comparisonValue = Math.abs(startComparison - endComparison)
+
+  if (startComparison < endComparison && comparisonValue >= 20)
+    return 'positive'
+  if (startComparison > endComparison && comparisonValue >= 20)
+    return 'negative'
+  return 'neutral'
 }

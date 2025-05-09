@@ -1,0 +1,1 @@
+export type HealthValue = 'positive' | 'neutral' | 'negative'
