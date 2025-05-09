@@ -26,21 +26,24 @@ For this exercise, we have pre-built an API endpoint we'll be able to access thr
 {
   retention_rate: {
     data: [
-      ['date', value]
+      [date: string, value: number]
       // ...[]
     ],
+    health: 'positive' | 'neutral' | 'negative',
   },
   transactions: {
     data: [
-      ['date', value]
+      [date: string, value: number]
       // ...[]
     ],
+    health: 'positive' | 'neutral' | 'negative',
   },
   revenue: {
     data: [
-      ['date', value]
+      [date: string, value: number]
       // ...[]
     ],
+    health: 'positive' | 'neutral' | 'negative',
   }
 }
 ```
