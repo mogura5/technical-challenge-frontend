@@ -6,6 +6,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
+      width: 110,
+      height: 52
     },
     credits: {
       enabled: false
@@ -28,8 +30,11 @@ export default function () {
       style: {
         color: 'white',
       },
+      
       formatter() {
-        const date = this.point.name
+        const date = dayjs(this.point.x).format('MMM-D-YYYY') // this.point.name
+        console.log(this.point)
+        console.log(this.point.x)
         const value = this.point.y
         return `${date} - ${value}`
       }
@@ -57,6 +62,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
+      width: 110,
+      height: 52
     },
     credits: {
       enabled: false
@@ -81,6 +88,7 @@ export default function () {
       },
       formatter() {
         const date = this.point.name
+        console.log(this.point)
         const value = this.point.y
         return `${date} - ${value}`
       }
@@ -108,6 +116,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
+      width: 110,
+      height: 52
     },
     credits: {
       enabled: false
