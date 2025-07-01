@@ -4,13 +4,21 @@
       <span>{{ header }}</span>
     </div>
 
-    <span class="data">{{ formattedValue }}</span>
+    <div v-if="error" class="text-red-500 mb-2"> Error</div>
 
-    <div class="container">
-        <Skeleton v-if="loading"/>
-        <Highcharts v-else :options="options" />
-  
-    </div>
+    <template v-else>
+      <span class="data">
+        <Skeleton v-if="loading" class="h-8 w-31 mb-5"/>
+        <div v-else>{{ formattedValue }}</div>
+      </span>
+    </template>
+
+    <template v-if="!error">
+      <div class="chart-container">
+        <Skeleton v-if="loading" class="h-15 w-40 mb-5"/>
+        <div v-else> <Highcharts :options="options"></Highcharts></div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -23,6 +31,7 @@ const props = defineProps<{
   value: number
   loading: boolean
   options: Highcharts.Options
+  error?: boolean
   format: 'usd' | 'percentage' | 'number'
 }>()
 
@@ -49,19 +58,17 @@ const formattedValue = computed(() => {
 .card {
   box-shadow: 0px 0.5px 1px 0.5px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  padding: 20px 16px;
-  width: 600px;
+  padding: 20px 15px;
+  width: 300px;
   height: 50px;
   position: relative;
   flex-direction: column;
   background-color: white;
   box-sizing: content-box;
 }
-.container {
-  width: 100px;
-  height: 70px;
+.chart-container {
   position: absolute;
-  right: 25px;
+  right: 20px;
   top: 15px;
 }
 .header {

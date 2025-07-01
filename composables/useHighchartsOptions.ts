@@ -6,8 +6,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
-      width: 110,
-      height: 52
+      width: 160,
+      height: 70
     },
     credits: {
       enabled: false
@@ -27,16 +27,17 @@ export default function () {
     },
     tooltip: {
       backgroundColor: 'var(--primary)',
+      useHTML: true,
       style: {
+        textAlign: 'center',
         color: 'white',
       },
-      
       formatter() {
-        const date = dayjs(this.point.x).format('MMM-D-YYYY') // this.point.name
-        console.log(this.point)
-        console.log(this.point.x)
-        const value = this.point.y
-        return `${date} - ${value}`
+        const date = dayjs(this.point.name).format('MMMM D, YYYY')
+        const value = '$' +this.point.y?.toFixed(2)
+        return `<span style="font-size: 12px">${date}
+        </span> <br><br>
+        <span style="font-size: 17px">${value}</span>`
       }
     },
     xAxis: {
@@ -62,8 +63,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
-      width: 110,
-      height: 52
+      width: 160,
+      height: 70
     },
     credits: {
       enabled: false
@@ -83,14 +84,17 @@ export default function () {
     },
     tooltip: {
       backgroundColor: 'var(--primary)',
+      useHTML: true,
       style: {
-        color: 'white',
+        textAlign: 'center',
+        color: 'white'
       },
       formatter() {
-        const date = this.point.name
-        console.log(this.point)
-        const value = this.point.y
-        return `${date} - ${value}`
+        const date = dayjs(this.point.name).format('MMMM D, YYYY')
+        const value = this.point.y?.toFixed()
+        return `<span style="font-size: 12px">${date}
+        </span> <br><br>
+        <span style="font-size: 17px">${value}</span>`
       }
     },
     xAxis: {
@@ -116,8 +120,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
-      width: 110,
-      height: 52
+      width: 160,
+      height: 70
     },
     credits: {
       enabled: false
@@ -138,12 +142,15 @@ export default function () {
     tooltip: {
       backgroundColor: 'var(--primary)',
       style: {
+        textAlign: 'center',
         color: 'white',
       },
       formatter() {
-        const date = this.point.name
-        const value = this.point.y
-        return `${date} - ${value}`
+        const date = dayjs(this.point.name).format('MMMM D, YYYY')
+        const value = this.point.y !== undefined ? (this.point.y * 100).toFixed(2) + '%' : 'N/A'
+        return `<span style="font-size: 12px">${date}
+        </span> <br><br>
+        <span style="font-size: 17px">${value}</span>`
       }
     },
     xAxis: {
