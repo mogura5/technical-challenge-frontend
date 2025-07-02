@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { FormattingValues } from '~/lib/utils'
 
 export default function () {
   const revenueOptions = ref<Highcharts.Options>({
@@ -6,8 +7,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
-      width: 160,
-      height: 70
+      width: 140,
+      height: 90
     },
     credits: {
       enabled: false
@@ -34,7 +35,7 @@ export default function () {
       },
       formatter() {
         const date = dayjs(this.point.name).format('MMMM D, YYYY')
-        const value = '$' +this.point.y?.toFixed(2)
+        const value = FormattingValues.usd(this.point.y !== undefined ? this.point.y : 0)
         return `<span style="font-size: 12px">${date}
         </span> <br><br>
         <span style="font-size: 17px">${value}</span>`
@@ -63,8 +64,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
-      width: 160,
-      height: 70
+      width: 140,
+      height: 90
     },
     credits: {
       enabled: false
@@ -91,7 +92,7 @@ export default function () {
       },
       formatter() {
         const date = dayjs(this.point.name).format('MMMM D, YYYY')
-        const value = this.point.y?.toFixed()
+        const value = FormattingValues.humanNumber(this.point.y !== undefined ? this.point.y : 0)
         return `<span style="font-size: 12px">${date}
         </span> <br><br>
         <span style="font-size: 17px">${value}</span>`
@@ -120,8 +121,8 @@ export default function () {
       marginTop: 0,
       marginBottom: 0,
       type: 'spline',
-      width: 160,
-      height: 70
+      width: 140,
+      height: 90
     },
     credits: {
       enabled: false
@@ -147,7 +148,7 @@ export default function () {
       },
       formatter() {
         const date = dayjs(this.point.name).format('MMMM D, YYYY')
-        const value = this.point.y !== undefined ? (this.point.y * 100).toFixed(2) + '%' : 'N/A'
+        const value = FormattingValues.percentage(this.point.y !== undefined ? this.point.y: 0)
         return `<span style="font-size: 12px">${date}
         </span> <br><br>
         <span style="font-size: 17px">${value}</span>`

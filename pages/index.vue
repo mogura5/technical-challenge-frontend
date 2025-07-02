@@ -3,52 +3,60 @@
     <div class="card-row">
       <DataCard
         header="Transactions"
-        :value=cards.transactions.value
-        :options=transactionsOptions
+        :value=options.transactions.value
+        :chartOptions=transactionsOptions
         :loading=loading
-        :error=cards.transactions.error
-        format="number"/>
+        :error=options.transactions.error
+        :format="NUMBER_FORMAT.NUMBER"/>
       <DataCard
         header="Avg. Revenue (7 Days)"
-        :value=cards.revenue.value
-        :options=revenueOptions
+        :value=options.revenue.value
+        :chartOptions=revenueOptions
         :loading=loading
-        :error=cards.revenue.error
-        format="usd"/>
+        :error=options.revenue.error
+        :format="NUMBER_FORMAT.USD"/>
       <DataCard
         header="Retention Rate"
-        :value=cards.retention_rate.value
-        :options=retentionRateOptions
+        :value=options.retention_rate.value
+        :chartOptions=retentionRateOptions
         :loading=loading
-        :error=cards.retention_rate.error
-        format="percentage"/>
+        :error=options.retention_rate.error
+        :format="NUMBER_FORMAT.PERCENTAGE"/>
     </div>
     <div class="btn-row">
-      <Button @click="fetchData()" class="btn btn-refresh">
+      <Button @click="fetchData()" class="btn hover:bg-gray-700" >
         Refresh Data
       </Button>
-      <Button @click="fetchData({ error: true })" class="btn btn-error">
+      <Button @click="fetchData({ error: true })" class="btn bg-red-500 hover:bg-red-400">
         Execute Error
       </Button>
     </div>
   </div>
 </template>
 
-<script setup> 
-import useHighcharts from '/composables/useHighchartsOptions.ts';
+<script setup lang="ts"> 
+import useHighcharts from '../composables/useHighchartsOptions';
 import DataCard from '../components/DataCard.vue';
 import { toast } from 'vue-sonner';
-import { getSplineColor } from '~/lib/utils';
-import { onMounted, ref } from 'vue';
+import { getSplineColor, NUMBER_FORMAT } from '~/lib/utils';
+import { onMounted, reactive} from 'vue';
 import axios from 'axios';
 
 const { revenueOptions, transactionsOptions, retentionRateOptions } = useHighcharts();
-const loading = ref(true);
-const cards = ref({
+const loading = ref<boolean>(true);
+
+const options = reactive({
   transactions: { value: 0, error: false },
   revenue: { value: 0, error: false },
   retention_rate: { value: 0, error: false },
 });
+
+const highchartsOptions = reactive({
+  transactions: transactionsOptions,
+  revenue: revenueOptions,
+  retention_rate: retentionRateOptions,
+});
+
  
 async function fetchData(params = {}) {
     loading.value = true;
@@ -60,48 +68,31 @@ async function fetchData(params = {}) {
         },
       });
 
-      cards.value = {
-        transactions: { 
-          value: data.transactions.data[0][1],
-        },
-        revenue: {
-          value: data.revenue.data[0][1], 
-        },
-        retention_rate: {
-          value: (data.retention_rate.data[0][1]) * 100,
-        }
-      };
+      Object.keys(data).forEach((key) => {
+        const card = key as keyof typeof options;
 
-      transactionsOptions.value.series = [{
-        data: data.transactions.data.map(d => ({
-          name: new Date(d[0]),
-          y: d[1],
-        })).reverse(),
-        color: getSplineColor(data.transactions.health)
-      }];
-      revenueOptions.value.series = [{
-        data: data.revenue.data.map(d => ({
-          name: new Date(d[0]),
-          y: d[1],
-        })).reverse(),
-        color: getSplineColor(data.revenue.health)
-      }];
-      retentionRateOptions.value.series = [{
-        data: data.retention_rate.data.map(d => ({
-          name: new Date(d[0]),
-          y: d[1],
-        })).reverse(),
-        date: data.retention_rate.data[0][0],
-        color: getSplineColor(data.retention_rate.health)
-      }];
+        options[card].value = data[card].data[0][1];
+        options[card].error = false;
+
+        highchartsOptions[card].series = [{
+          type: "spline",
+          data: data[card].data.map((d: [number, number]) => ({
+            name: new Date(d[0]),
+            y: d[1],
+          })).reverse(),
+          color: getSplineColor(data[card].health)
+        }];
+      })
 
     } catch (error) {
-
-      cards.value = {
-        transactions: { value: 0, error: true },
-        revenue: { value: 0, error: true },
-        retention_rate: { value: 0, error: true },
-      };
+      
+      options.transactions.value = 0;
+      options.revenue.value = 0;
+      options.retention_rate.value = 0;
+      
+      options.transactions.error = true;
+      options.revenue.error = true;
+      options.retention_rate.error = true;
 
       console.error('Error fetching data:', error);
       toast.error('(404) Error handled successfully.');
@@ -116,13 +107,12 @@ async function fetchData(params = {}) {
   })
 </script>
 
-<style scoped>
+<style land="scss" scoped>
 .container {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
 }
 .card-row {
   display: flex;
@@ -136,9 +126,8 @@ async function fetchData(params = {}) {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -30px;
 }
-.btn{
+.btn {
   border-radius: 8px;
   text-align: center;
   color: white;
@@ -147,17 +136,5 @@ async function fetchData(params = {}) {
   padding: 16px 20px;
   margin: 5px;
   transition-duration: 0.4s;
-}
-.btn-refresh {
-  background-color: black;
-}
-.btn-refresh:hover {
-  background-color: rgb(78, 74, 74);
-}
-.btn-error {
-  background-color: red;
-}
-.btn-error:hover {
-  background-color: rgb(235, 115, 115);
 }
 </style>
