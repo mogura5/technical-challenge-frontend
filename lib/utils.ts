@@ -16,6 +16,19 @@ export function getSplineColor(health: 'positive' | 'negative' | 'neutral'): str
   }
 }
 
+export function getFormat(key: 'transactions' | 'revenue' | 'retention_rate'): NUMBER_FORMAT {
+  switch (key) {
+    case 'transactions':
+      return NUMBER_FORMAT.NUMBER;
+    case 'revenue':
+      return NUMBER_FORMAT.USD;
+    case 'retention_rate':
+      return NUMBER_FORMAT.PERCENTAGE;
+    default:
+      return NUMBER_FORMAT.NUMBER;
+  }
+}
+
 export enum NUMBER_FORMAT {
   USD = 'usd',
   PERCENTAGE = 'percentage',

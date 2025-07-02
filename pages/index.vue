@@ -2,26 +2,15 @@
   <div class="container">
     <div class="card-row">
       <DataCard
-        header="Transactions"
-        :value=options.transactions.value
-        :chartOptions=transactionsOptions
-        :loading=loading
-        :error=options.transactions.error
-        :format="NUMBER_FORMAT.NUMBER"/>
-      <DataCard
-        header="Avg. Revenue (7 Days)"
-        :value=options.revenue.value
-        :chartOptions=revenueOptions
-        :loading=loading
-        :error=options.revenue.error
-        :format="NUMBER_FORMAT.USD"/>
-      <DataCard
-        header="Retention Rate"
-        :value=options.retention_rate.value
-        :chartOptions=retentionRateOptions
-        :loading=loading
-        :error=options.retention_rate.error
-        :format="NUMBER_FORMAT.PERCENTAGE"/>
+        v-for="(card, key) in cards"
+        :key="key"
+        :header="key"
+        :value="card.value"
+        :chartOptions="highchartsOptions[key]"
+        :loading="loading"
+        :error="card.error"
+        :format="getFormat(key)"
+      />
     </div>
     <div class="btn-row">
       <Button @click="fetchData()" class="btn hover:bg-gray-700" >
@@ -38,14 +27,14 @@
 import useHighcharts from '../composables/useHighchartsOptions';
 import DataCard from '../components/DataCard.vue';
 import { toast } from 'vue-sonner';
-import { getSplineColor, NUMBER_FORMAT } from '~/lib/utils';
+import { getSplineColor, getFormat } from '~/lib/utils';
 import { onMounted, reactive} from 'vue';
 import axios from 'axios';
 
 const { revenueOptions, transactionsOptions, retentionRateOptions } = useHighcharts();
 const loading = ref<boolean>(true);
 
-const options = reactive({
+const cards = reactive({
   transactions: { value: 0, error: false },
   revenue: { value: 0, error: false },
   retention_rate: { value: 0, error: false },
@@ -57,7 +46,6 @@ const highchartsOptions = reactive({
   retention_rate: retentionRateOptions,
 });
 
- 
 async function fetchData(params = {}) {
     loading.value = true;
 
@@ -69,10 +57,10 @@ async function fetchData(params = {}) {
       });
 
       Object.keys(data).forEach((key) => {
-        const card = key as keyof typeof options;
+        const card = key as keyof typeof cards;
 
-        options[card].value = data[card].data[0][1];
-        options[card].error = false;
+        cards[card].value = data[card].data[0][1];
+        cards[card].error = false;
 
         highchartsOptions[card].series = [{
           type: "spline",
@@ -86,13 +74,13 @@ async function fetchData(params = {}) {
 
     } catch (error) {
       
-      options.transactions.value = 0;
-      options.revenue.value = 0;
-      options.retention_rate.value = 0;
+      cards.transactions.value = 0;
+      cards.revenue.value = 0;
+      cards.retention_rate.value = 0;
       
-      options.transactions.error = true;
-      options.revenue.error = true;
-      options.retention_rate.error = true;
+      cards.transactions.error = true;
+      cards.revenue.error = true;
+      cards.retention_rate.error = true;
 
       console.error('Error fetching data:', error);
       toast.error('(404) Error handled successfully.');
