@@ -4,7 +4,7 @@
       <DataCard
         v-for="(card, key) in cards"
         :key="key"
-        :header="key"
+        :header="card.header"
         :value="card.value"
         :chartOptions="highchartsOptions[key]"
         :loading="loading"
@@ -35,9 +35,9 @@ const { revenueOptions, transactionsOptions, retentionRateOptions } = useHighcha
 const loading = ref<boolean>(true);
 
 const cards = reactive({
-  transactions: { value: 0, error: false },
-  revenue: { value: 0, error: false },
-  retention_rate: { value: 0, error: false },
+  transactions: { header: 'Transactions', value: 0, error: false },
+  revenue: { header: 'Avg. Revenue (7 days)', value: 0, error: false },
+  retention_rate: { header: 'Retention Rate', value: 0, error: false },
 });
 
 const highchartsOptions = reactive({
