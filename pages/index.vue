@@ -101,6 +101,7 @@ async function fetchData(params = {}) {
   flex-direction: column;
   justify-content: center;
   height: 100vh;
+  margin: 0 auto;
 }
 .card-row {
   display: flex;
@@ -108,7 +109,6 @@ async function fetchData(params = {}) {
   padding: 40px;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
 }
 .btn-row {
   display: flex;
@@ -117,11 +117,9 @@ async function fetchData(params = {}) {
 }
 .btn {
   border-radius: 8px;
-  text-align: center;
   color: white;
   text-align: center;
   font-size: 13px;
-  padding: 16px 20px;
   margin: 5px;
   transition-duration: 0.4s;
 }

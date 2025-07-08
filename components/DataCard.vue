@@ -53,7 +53,6 @@ const formattedValue = computed(() => {
 .card {
   display: flex;
   flex-direction: row;
-  align-items: center;
   width: 400px;
   height: 100px;
   background-color: white;
