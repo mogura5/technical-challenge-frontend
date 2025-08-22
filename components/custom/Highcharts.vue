@@ -12,3 +12,6 @@ defineProps<{
 <template>
   <component :is="createHighcharts('Highcharts', Highcharts)" :options="options" />
 </template>
+
+<style scoped>
+</style>
